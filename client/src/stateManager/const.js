@@ -1,0 +1,2 @@
+export const EVENT_SIGNUP = 'EVENT_SIGNUP'
+export const EVENT_LOGOUT = 'EVENT_LOGOUT';

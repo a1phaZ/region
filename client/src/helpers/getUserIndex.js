@@ -1,0 +1,1 @@
+export default ({membersList, user}) => membersList?.findIndex(({userId}) => userId.toString() === user.userId.toString());
