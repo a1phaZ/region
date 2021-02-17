@@ -3,7 +3,7 @@ export const initialState = {
 	fetch: {}
 }
 
-export const dashboardReducer = (state = initialState, action) => {
+export const clientEventReducer = (state = initialState, action) => {
 	switch (action.type) {
 		case 'ISLOADING':
 			return {

@@ -1,8 +1,8 @@
 import {combineReducers} from "redux";
-import {dashboardReducer} from "./dashboardReducer";
+import {clientEventReducer} from "./clientEventReducer";
 
 const config = {
-	dashboardReducer
+	clientEventReducer: clientEventReducer
 }
 
 const appReducer = combineReducers(config);

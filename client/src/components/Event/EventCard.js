@@ -37,7 +37,7 @@ export default ({id, title, date, time, organizer, maxCount, membersList, eventS
 					<Button
 						size={'l'}
 						stretched
-						disabled={userIndex === -1 && maxCount <= membersCount || loading}
+						disabled={(userIndex === -1 && maxCount <= membersCount) || loading}
 						mode={userIndex === -1 ? 'commerce' : 'destructive'}
 						data-id={id}
 						onClick={
