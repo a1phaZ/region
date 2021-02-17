@@ -25,6 +25,7 @@ import {
 } from "@vkontakte/icons";
 import withAdaptivity from "@vkontakte/vkui/dist/hoc/withAdaptivity";
 import Events from "./panels/Events";
+import Dashboard from "./panels/Dashboard";
 
 const user = {
 	userId: '10',
@@ -59,6 +60,18 @@ const App = withAdaptivity(({viewWidth}) => {
 						{hasHeader && <PanelHeader/>}
 						<Group>
 							<Cell
+								disabled={activeStory === 'dashboard'}
+								style={activeStory === 'dashboard' ? {
+									backgroundColor: "var(--button_secondary_background)",
+									borderRadius: 8
+								} : {}}
+								data-story="dashboard"
+								onClick={onStoryChange}
+								before={<Icon28ServicesOutline/>}
+							>
+								dashboard
+							</Cell>
+							<Cell
 								disabled={activeStory === 'feed'}
 								style={activeStory === 'feed' ? {
 									backgroundColor: "var(--button_secondary_background)",
@@ -69,18 +82,6 @@ const App = withAdaptivity(({viewWidth}) => {
 								before={<Icon28NewsfeedOutline/>}
 							>
 								feed
-							</Cell>
-							<Cell
-								disabled={activeStory === 'services'}
-								style={activeStory === 'services' ? {
-									backgroundColor: "var(--button_secondary_background)",
-									borderRadius: 8
-								} : {}}
-								data-story="services"
-								onClick={onStoryChange}
-								before={<Icon28ServicesOutline/>}
-							>
-								services
 							</Cell>
 							<Cell
 								disabled={activeStory === 'messages'}
@@ -139,9 +140,9 @@ const App = withAdaptivity(({viewWidth}) => {
 					><Icon28NewsfeedOutline/></TabbarItem>
 					<TabbarItem
 						onClick={onStoryChange}
-						selected={activeStory === 'services'}
-						data-story="services"
-						text="Сервисы"
+						selected={activeStory === 'dashboard'}
+						data-story="dashboard"
+						text="Админ"
 					><Icon28ServicesOutline/></TabbarItem>
 					<TabbarItem
 						onClick={onStoryChange}
@@ -173,14 +174,8 @@ const App = withAdaptivity(({viewWidth}) => {
 						{/*	</Group>*/}
 						{/*</Panel>*/}
 					</View>
-					<View id="services" activePanel="services">
-						<Panel id="services">
-							<PanelHeader left={<PanelHeaderBack/>}>Сервисы</PanelHeader>
-							<Group>
-								<Placeholder icon={<Icon28ServicesOutline width={56} height={56}/>}>
-								</Placeholder>
-							</Group>
-						</Panel>
+					<View id="dashboard" activePanel="dashboard">
+						<Dashboard id={'dashboard'} />
 					</View>
 					<View id="messages" activePanel="messages">
 						<Panel id="messages">

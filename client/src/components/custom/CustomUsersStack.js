@@ -8,14 +8,26 @@ export default ({membersList = [], count = 3}) => {
 	const membersListLength = membersList.length;
 	const anotherCount = membersListLength - count;
 	const _people = people(anotherCount);
+	let helperDescription = ''
+	if (anotherCount <0 && membersListLength !== 0) {
+		if (membersListLength === 1) {
+			helperDescription += ' идёт';
+		} else {
+			helperDescription += ' идут';
+		}
+	} else if (membersListLength === 0) {
+		helperDescription = 'Пока ни кто не идет'
+	} else {
+		helperDescription += ` и ещё ${anotherCount} ${_people}`;
+	}
 	return (
 		<UsersStack
 			photos={membersPhotosList}
-			size="m"
+			size="s"
 			count={count}
 			// layout="vertical"
 		>
-			{helperText}<br />и ещё {anotherCount} {_people}
+			{helperText} <br/> {helperDescription}
 		</UsersStack>
 	)
 }

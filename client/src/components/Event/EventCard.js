@@ -12,7 +12,10 @@ export default ({id, title, date, time, organizer, maxCount, membersList, eventS
 	const userIndex = getUserIndex({membersList, user});
 	const membersCount = membersList.length;
 	const formatedDate = format(new Date(date), 'dd.MM.yyyy');
-	const buttonText = userIndex === -1 ? 'Записаться' : 'Снять запись'
+	let buttonText = userIndex === -1 ? 'Записаться' : 'Снять запись';
+	if (userIndex === -1 && maxCount <= membersCount) {
+		buttonText = 'Мест нет';
+	}
 
 	return (
 		<Card size="l" mode="outline" style={{width: 'auto'}}>

@@ -13,6 +13,18 @@ app.get('/api/events', (req, res) => {
 	res.send({events: events})
 });
 
+app.get('/api/dashboard', (req, res) => {
+	console.log('/api/events');
+	res.send({events: events})
+});
+
+app.post('/api/dashboard/events/create', (req, res) => {
+	const event = req.body;
+	event.id = events.length + 1;
+	events.push(event);
+	res.json({events: events});
+})
+
 app.post('/api/events/:id/signup', (req, res) => {
 	const {id} = req.params;
 	const {user} = req.body;
