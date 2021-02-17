@@ -7,6 +7,7 @@ import EventCardList from "../components/Event/EventCardList";
 import {sendData, getData} from "../actions/dashboardAction";
 import {connect} from 'react-redux';
 import {bindActionCreators} from "redux";
+import {PanelSpinner} from "@vkontakte/vkui";
 
 class Events extends Component{
 	constructor(/*props*/) {
@@ -15,22 +16,34 @@ class Events extends Component{
 			data: []
 		};
 		this.callApi = this.callApi.bind(this);
+		this.eventSignUp = this.eventSignUp.bind(this);
 	}
 	
 	componentDidMount() {
 		this.callApi();
 	}
 	
+	eventSignUp = (payload) => {
+		this.props.sendData('/api/data', payload);
+	}
+	
 	callApi = () => {
-		this.props.getData('/api/hello');
+		this.props.getData('/api/events');
 	};
 	
-	render(): React.ReactNode {
+	render() {
 		return (
 			<Panel id={this.props.id}>
 				<PanelHeader>Example</PanelHeader>
 				<Group >
-					<EventCardList user={this.props.user} data={this.props.getDataFromBackend.data} eventLogOut={() => {}} eventSignUp={() => {}}/>
+					{
+						this.props.data.events
+							?
+							<EventCardList user={this.props.user} data={this.props.data.events} eventLogOut={this.eventSignUp} eventSignUp={this.eventSignUp} loading={this.props.fetch.isLoading}/>
+							:
+							<PanelSpinner />
+					}
+					
 				</Group>
 			</Panel>
 		)
@@ -39,8 +52,9 @@ class Events extends Component{
 
 function mapStateToProps(state){
 	return {
-		dataFromBackend : state.dashboardReducer.dataFromBackend,
-		getDataFromBackend : state.dashboardReducer.getDataFromBackend
+		data : state.dashboardReducer.data,
+		fetch: state.dashboardReducer.fetch
+		// getDataFromBackend : state.dashboardReducer.getDataFromBackend
 	}
 }
 const mapDispatchToProps = dispatch => bindActionCreators({

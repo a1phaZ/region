@@ -1,7 +1,6 @@
-import mock from "../mock";
-
 export const sendData = (url, payload) => {
 	return dispatch => {
+		dispatch({type: 'ISLOADING', fetch: {isLoading: true}});
 		return fetch(url, {
 			method: 'POST',
 			headers: {
@@ -10,7 +9,8 @@ export const sendData = (url, payload) => {
 			body: JSON.stringify(payload)
 		}).then(res => res.json())
 			.then(res => {
-				dispatch({type: 'DATA_FROM_BACKEND', dataFromBackend: res})
+				dispatch({type: 'DATA_FROM_BACKEND', data: res})
+				dispatch({type: 'ISLOADING', fetch: {isLoading: false}});
 			})
 			.catch(err => {
 				console.log('Api error', err)
@@ -18,16 +18,19 @@ export const sendData = (url, payload) => {
 	}
 }
 
-export const getData = (/*url*/) => {
+export const getData = (url) => {
 	return dispatch => {
-		dispatch({type: 'GET_DATA', getDataFromBackend: {data: mock}})
-		// return fetch(url)
-		// 	.then(res => res.json())
-		// 	.then(res => {
-		// 		dispatch({type: 'GET_DATA', getDataFromBackend: res})
-		// 	})
-		// 	.catch(err => {
-		// 		console.log('Api error', err)
-		// 	})
+		
+		// dispatch({type: 'GET_DATA', getDataFromBackend: {data: mock}})
+		return fetch(url)
+			.then(res => {
+				return res.json();
+			})
+			.then(res => {
+				dispatch({type: 'GET_DATA', data: res})
+			})
+			.catch(err => {
+				console.log('Api error', err)
+			})
 	}
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import Div from "@vkontakte/vkui/dist/components/Div/Div";
-import {Caption, FormLayout, SimpleCell, Subhead, Title} from "@vkontakte/vkui";
+import {Caption, FormLayout, SimpleCell, Spinner, Subhead, Title} from "@vkontakte/vkui";
 import Avatar from "@vkontakte/vkui/dist/components/Avatar/Avatar";
 import Button from "@vkontakte/vkui/dist/components/Button/Button";
 import Card from "@vkontakte/vkui/dist/components/Card/Card";
@@ -8,7 +8,7 @@ import CustomUsersStack from "../custom/CustomUsersStack";
 import {format} from 'date-fns';
 import getUserIndex from "../../helpers/getUserIndex";
 
-export default ({id, title, date, time, organizer, maxCount, membersList, eventSignUp, eventLogOut, user}) => {
+export default ({id, title, date, time, organizer, maxCount, membersList, eventSignUp, eventLogOut, user, loading}) => {
 	const userIndex = getUserIndex({membersList, user});
 	const membersCount = membersList.length;
 	const formatedDate = format(new Date(date), 'dd.MM.yyyy');
@@ -37,7 +37,7 @@ export default ({id, title, date, time, organizer, maxCount, membersList, eventS
 					<Button
 						size={'l'}
 						stretched
-						disabled={userIndex === -1 && maxCount <= membersCount}
+						disabled={userIndex === -1 && maxCount <= membersCount || loading}
 						mode={userIndex === -1 ? 'commerce' : 'destructive'}
 						data-id={id}
 						onClick={
@@ -52,7 +52,7 @@ export default ({id, title, date, time, organizer, maxCount, membersList, eventS
 								}
 						}
 					>
-						{buttonText}
+						{!loading ? buttonText : <Spinner size="regular" />}
 					</Button>
 				</FormLayout>
 			</Div>
