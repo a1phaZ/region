@@ -2,7 +2,7 @@ import React from 'react';
 import EventCard from "./EventCard";
 import {CardScroll, Group, Header, List} from "@vkontakte/vkui";
 
-export default ({data, eventSignUp, eventLogOut, user}) => {
+export default ({data = [], eventSignUp, eventLogOut, user}) => {
 	const list = data.map(event => <EventCard key={event.id} eventSignUp={eventSignUp} eventLogOut={eventLogOut} user={user} {...event}/>)
 	return (
 		<List>

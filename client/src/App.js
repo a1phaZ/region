@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {
 	Cell,
 	Epic,
@@ -24,9 +24,7 @@ import {
 	Icon28UserCircleOutline
 } from "@vkontakte/icons";
 import withAdaptivity from "@vkontakte/vkui/dist/hoc/withAdaptivity";
-import Home from "./panels/Home";
-import {State} from "./state";
-import {EVENT_LOGOUT, EVENT_SIGNUP} from "./stateManager/const";
+import Events from "./panels/Events";
 
 const user = {
 	userId: '10',
@@ -41,15 +39,15 @@ const App = withAdaptivity(({viewWidth}) => {
 	const onStoryChange = (e) => setActiveStory(e.currentTarget.dataset.story);
 	const isDesktop = viewWidth >= ViewWidth.TABLET;
 	const hasHeader = platform !== VKCOM;
-	const [state, dispatch] = useContext(State);
+	// const [state, dispatch] = useContext(State);
 	
-	const eventSignUp = ({id, user}) => {
-		dispatch({type: EVENT_SIGNUP, payload: {id, user}});
-	}
-	const eventLogOut = ({id, user}) => {
-		dispatch({type: EVENT_LOGOUT, payload: {id, user}});
-	}
-
+	// const eventSignUp = ({id, user}) => {
+	// 	dispatch({type: EVENT_SIGNUP, payload: {id, user}});
+	// }
+	// const eventLogOut = ({id, user}) => {
+	// 	dispatch({type: EVENT_LOGOUT, payload: {id, user}});
+	// }
+	
 	return (
 		<SplitLayout
 			header={hasHeader && <PanelHeader separator={false}/>}
@@ -57,7 +55,7 @@ const App = withAdaptivity(({viewWidth}) => {
 		>
 			{isDesktop && (
 				<SplitCol fixed width="280px" maxWidth="280px">
-					<Panel>
+					<Panel id={'navigation'}>
 						{hasHeader && <PanelHeader/>}
 						<Group>
 							<Cell
@@ -167,7 +165,7 @@ const App = withAdaptivity(({viewWidth}) => {
 				</Tabbar>
 				}>
 					<View id="feed" activePanel="feed">
-						<Home data={state.events} id={'feed'} eventSignUp={eventSignUp} eventLogOut={eventLogOut} user={user}/>
+						<Events id={'feed'} user={user}/>
 						{/*<Panel id="feed">*/}
 						{/*	<PanelHeader left={<PanelHeaderBack/>}>Новости</PanelHeader>*/}
 						{/*	<Group>*/}
