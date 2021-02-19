@@ -15,7 +15,14 @@ const getGroup = async (req, res, next) => {
 	
 	const filter = {groupId: vk_group_id}
 	await Group.findOne(filter)
-		.populate('events')
+		.populate({
+			path: 'events',
+			populate: {
+				path: 'organizer membersList',
+				select: '-_id -createdAt -updatedAt -groupsData -__v'
+			},
+			select: '-createdAt -updatedAt -__v'
+		})
 		.then(group => res.status(200).json(group))
 		.catch(err => {
 			console.log(err);
@@ -41,6 +48,14 @@ const addGroup = async (req, res, next) => {
 		events: []
 	})
 	await group.save()
+		.populate({
+			path: 'events',
+			populate: {
+				path: 'organizer membersList',
+				select: '-_id -createdAt -updatedAt -groupsData -__v'
+			},
+			select: '-createdAt -updatedAt -__v'
+		})
 		.then(group => res.status(200).json(group))
 		.catch(err => {
 			if (err.code === 11000 && err.name === 'MongoError') {

@@ -1,7 +1,7 @@
 const Event = require('../../../models/Event');
 const Group = require('../../../models/Group');
 const User = require('../../../models/User');
-const {isExist, isValidEventData} = require("../../../helpers/checkInputData");
+const {isExist, isValidEventData, isValidObjectId} = require("../../../helpers/checkInputData");
 
 const getEvents = async (req, res, next) => {
 	const {
@@ -21,7 +21,7 @@ const getEvents = async (req, res, next) => {
 				path: 'organizer membersList',
 				select: '-_id -createdAt -updatedAt -groupsData -__v'
 			},
-			select: '-_id -createdAt -updatedAt -__v'
+			select: '-createdAt -updatedAt -__v'
 		})
 		.then(group => res.status(200).json(group.events))
 		.catch(err => {
@@ -30,9 +30,30 @@ const getEvents = async (req, res, next) => {
 		})
 }
 
-// const getEvent = async (req, res, next) => {
-//
-// }
+const getEvent = async (req, res, next) => {
+	const {
+		query: {
+			vk_group_id
+		},
+		params: {
+			id
+		}
+	} = req;
+	if (!isExist(vk_group_id)) return next(new Error('Нет идетификатора группы'));
+	if (!isValidObjectId(id)) return next(new Error('Недопустимый идентификатор события'));
+	
+	await Event.findById(id)
+		.select('-createdAt -updatedAt -groupsData -__v')
+		.populate({
+			path: 'organizer membersList',
+			select: '-_id -createdAt -updatedAt -groupsData -__v'
+		})
+		.then(event => res.status(200).json(event))
+		.catch(err => {
+			console.log(err);
+			return next(new Error('Ошибка чтения из базы данных'));
+		});
+}
 
 const addEvent = async (req, res, next) => {
 	const {
@@ -71,7 +92,7 @@ const addEvent = async (req, res, next) => {
 	dbGroup.events.push(newEvent._id);
 	await dbGroup.save();
 	await Event.findById(newEvent._id)
-		.select('-_id -createdAt -updatedAt -groupsData -__v')
+		.select('-createdAt -updatedAt -groupsData -__v')
 		.populate({
 			path: 'organizer membersList',
 			select: '-_id -createdAt -updatedAt -groupsData -__v'
@@ -83,13 +104,13 @@ const addEvent = async (req, res, next) => {
 		});
 }
 
-// const updateEvent = async (req, res, next) => {
-//
-// }
-//
-// const deleteEvent = async (req, res, next) => {
-//
-// }
+const updateEvent = async (req, res, next) => {
+
+}
+
+const deleteEvent = async (req, res, next) => {
+
+}
 
 module.exports = {
 	getEvents,
