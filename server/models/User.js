@@ -1,11 +1,12 @@
 const mongoose = require('mongoose');
 const {Schema, model} = mongoose;
+const {Types} = Schema;
 
 const UserSchema = new Schema({
-	userId: {type: String, required: [true, 'Отсутствует идетификатор пользователя'], unique: true},
+	userId: {type: String, required: [true, 'Отсутствует идетификатор пользователя'], unique: true, index: true},
 	groupsData: [
 		{
-			groupId: {type: String},
+			group: {type: Types.ObjectId, ref: 'Group'},
 			role: {type: String}
 		}
 	],
@@ -17,7 +18,8 @@ UserSchema.methods.serialize = function (groupId) {
 	return {
 		userId: this.userId,
 		group: {
-			groupId: this.groupsData[index].groupId,
+			groupId: this.groupsData[index].group.groupId,
+			events: this.groupData[index].group.events,
 			role: this.groupsData[index].role,
 		},
 		notification: this.notification
